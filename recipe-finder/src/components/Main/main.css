@@ -1,0 +1,56 @@
+.main {
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.search {
+  padding: 0.5rem;
+  border-radius: 10px;
+  border: 1px black solid;
+  width: 23rem;
+}
+
+.outcome {
+  margin-top: 2rem;
+  border-radius: 8px;
+  /* border: double rgb(148, 94, 12) 5px; */
+  width: 50%;
+  padding: 1rem;
+}
+
+.outcome h2 {
+  font-size: 3.5rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.recipe-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.2rem;
+}
+
+.recipe-container img {
+  width: 10rem;
+  border-radius: 10px;
+}
+
+.short-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  color: rgb(238, 171, 46);
+  background-color: rgb(236, 227, 213);
+  border-radius: 4px;
+  padding: 1rem;
+  width: 100%;
+}
+
+.short-desc h3 {
+  font-size: 2rem;
+  color: rgb(48, 48, 48);
+}
