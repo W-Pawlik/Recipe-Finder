@@ -16,7 +16,6 @@
 .outcome {
   margin-top: 2rem;
   border-radius: 8px;
-  /* border: double rgb(148, 94, 12) 5px; */
   width: 50%;
   padding: 1rem;
 }
@@ -36,21 +35,83 @@
 .recipe-container img {
   width: 10rem;
   border-radius: 10px;
+  align-self: start;
+}
+
+.rec-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .short-desc {
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
   font-size: 1.5rem;
-  color: rgb(238, 171, 46);
+  color: rgb(148, 100, 10);
   background-color: rgb(236, 227, 213);
   border-radius: 4px;
   padding: 1rem;
-  width: 100%;
+}
+
+.short-desc:hover {
+  background-color: rgb(229, 198, 147);
 }
 
 .short-desc h3 {
   font-size: 2rem;
   color: rgb(48, 48, 48);
+}
+
+.short-desc span {
+  width: 50%;
+  text-align: end;
+}
+
+.book {
+  font-size: 2rem;
+}
+
+.long-desc {
+  background-color: rgb(236, 227, 213);
+  border-radius: 8px;
+  padding: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.youtube-i {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
+}
+
+.long-cont {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  justify-items: center;
+}
+
+.long-cont h4 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.ing-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ing-content button {
+  align-self: end;
 }
