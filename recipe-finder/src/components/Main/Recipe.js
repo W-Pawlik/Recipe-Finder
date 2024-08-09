@@ -2,7 +2,7 @@ import { useState } from "react";
 import { YoutubeFilled } from "@ant-design/icons";
 import Button from "../ui/Button";
 
-export default function Recipe({ recipe }) {
+export default function Recipe({ recipe, onSavedRecipes, savedRecipes }) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleToggleDetails() {
@@ -20,22 +20,31 @@ export default function Recipe({ recipe }) {
             <p>Country: {recipe.strArea}</p>
           </div>
 
+          {savedRecipes.map((rec) => rec.id).includes(recipe.idMeal) ? (
+            <span>Saved ✅</span>
+          ) : null}
+
           <span>
             Show recipe <span className="book">{!isOpen ? "📘" : "📖"}</span>
           </span>
         </div>
         {isOpen && (
           <div className="long-desc">
-            <a href={recipe.strYoutube} target="blank" className="youtube-i">
-              <YoutubeFilled
-                style={{
-                  fontSize: "3.5rem",
-                  color: "red",
-                  cursor: "pointer",
-                  pointerEvents: "auto",
-                }}
-              />
-            </a>
+            <div className="long-actions">
+              <a href={recipe.strYoutube} target="blank" className="youtube-i">
+                <YoutubeFilled
+                  style={{
+                    fontSize: "3.8rem",
+                    color: "red",
+                    cursor: "pointer",
+                    pointerEvents: "auto",
+                  }}
+                />
+              </a>
+              <Button onClick={() => onSavedRecipes(recipe)}>
+                Save recipe
+              </Button>
+            </div>
             <div className="long-cont">
               <div>
                 <h4>Instruction</h4>

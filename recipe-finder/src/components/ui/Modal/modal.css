@@ -1,0 +1,54 @@
+.modal,
+.overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.overlay {
+  /* background-col: rgba(49, 49, 49, 0.8); */
+  /* background-color: transparent; */
+  background-color: rgba(0, 0, 0, 0.267);
+}
+
+.modal-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(236, 227, 213);
+  width: 35rem;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.modal p {
+  font-size: 1.8rem;
+}
+
+.modal h2 {
+  font-size: 3rem;
+  margin-bottom: 0.8rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+}
+
+.close-btn:hover {
+  color: rgb(148, 100, 10);
+  cursor: pointer;
+}

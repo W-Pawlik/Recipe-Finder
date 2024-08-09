@@ -18,12 +18,25 @@
   border-radius: 8px;
   width: 50%;
   padding: 1rem;
+  min-height: 60vh;
 }
 
 .outcome h2 {
   font-size: 3.5rem;
   text-align: center;
   margin-bottom: 2rem;
+}
+
+.search-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-img {
+  width: 40rem;
+  border-radius: 20px;
 }
 
 .recipe-container {
@@ -82,13 +95,6 @@
   font-size: 1.5rem;
 }
 
-.youtube-i {
-  display: inline-block;
-  text-align: center;
-  width: 100%;
-  pointer-events: none;
-}
-
 .long-cont {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -100,6 +106,26 @@
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 0.8rem;
+}
+
+.long-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.long-actions button {
+  font-size: 1.8rem;
+  border: 1px solid rgb(148, 100, 10) !important;
+  background-color: rgb(204, 182, 155) !important;
+  color: rgb(48, 48, 48) !important;
+  padding: 0.4rem;
+  border-radius: 7px;
+}
+
+.long-actions button:hover {
+  background-color: rgb(187, 169, 148) !important;
 }
 
 .ing-content {
@@ -114,4 +140,58 @@
 
 .ing-content button {
   align-self: end;
+}
+
+.savedRecipes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.savedRecipes h2 {
+  margin-top: 2rem;
+}
+
+.slider {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid rgb(148, 100, 10);
+  border-radius: 10px;
+  height: 20.2rem;
+}
+
+.slick-list {
+  width: 100rem;
+}
+
+.savedRecipes h2 {
+  font-size: 2.9rem;
+}
+
+.slider-img {
+  width: 20rem;
+}
+
+.slider-btn {
+  font-size: 4rem;
+  background-color: rgba(148, 148, 148, 0.658);
+  border: none;
+  border-radius: 10px 0 0 10px;
+  padding-right: 0.7rem;
+  color: rgb(148, 100, 10);
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+  height: 20rem;
+}
+
+.right {
+  padding-right: 0;
+  padding-left: 0.7rem;
+  border-radius: 0 10px 10px 0;
+}
+
+.slider-btn:hover {
+  background-color: rgba(97, 97, 97, 0.658);
 }

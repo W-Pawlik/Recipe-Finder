@@ -14,6 +14,33 @@ function App() {
   const [error, setError] = useState("");
   const [savedRecipes, setSavedRecipes] = useState([]);
 
+  function handleSavedRecipes(recipe) {
+    const savedRecipe = {
+      id: recipe.idMeal,
+      name: recipe.strMeal,
+      category: recipe.strCategory,
+      country: recipe.strArea,
+      instruction: recipe.strInstructions,
+      img: recipe.strMealThumb,
+      tags: recipe.strTags,
+      youtube: recipe.strYoutube,
+      ingredients: Array.from({ length: 20 }, (_, i) => {
+        const ingName = recipe[`strIngredient${i + 1}`];
+        const measure = recipe[`strMeasure${i + 1}`];
+        const ingredient = ingName + " " + measure;
+        return ingredient;
+      }).filter((ing) => ing.length > 2),
+      // userRating: userRating,
+    };
+
+    if (savedRecipes.map((rec) => rec.id).includes(savedRecipe.id)) {
+      alert("You have already saved this recipe 😉");
+      return;
+    }
+
+    setSavedRecipes((savedRecipes) => [...savedRecipes, savedRecipe]);
+  }
+
   useEffect(
     function () {
       async function fetchRecipes() {
@@ -29,7 +56,6 @@ function App() {
           const recipesData = await res.json();
 
           if (recipesData.meals === null) throw new Error("Recipe not found");
-          console.log(recipesData);
           setRecipes(recipesData.meals);
           setError("");
         } catch (err) {
@@ -54,8 +80,14 @@ function App() {
       <Header />
       <Main>
         <Search query={query} setQuery={setQuery} />
-        <Outcome recipes={recipes} isLoading={isLoading} error={error} />
-        <SavedRecipes />
+        <Outcome
+          recipes={recipes}
+          isLoading={isLoading}
+          error={error}
+          onSavedRecipes={handleSavedRecipes}
+          savedRecipes={savedRecipes}
+        />
+        <SavedRecipes savedRecipes={savedRecipes} />
       </Main>
       <Footer />
     </div>

@@ -1,5 +1,6 @@
 import Button from "../Button";
 import "./error.css";
+import RecipeNotFound from "../../../imgs/recipe-not-found.png";
 
 export default function Error({ error }) {
   return (
@@ -11,10 +12,14 @@ export default function Error({ error }) {
           <p className="error-img">❌</p>
         </>
       ) : (
-        <>
-          <p className="error-message">🥙😢 {error} 😢🥘</p>
+        <div className="not-found">
+          <img
+            src={RecipeNotFound}
+            alt="Recipe not found"
+            style={{ width: "40rem" }}
+          />
           <Button className={"error-btn"}>Create your own recipe! ✍</Button>
-        </>
+        </div>
       )}
     </div>
   );
