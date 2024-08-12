@@ -5,6 +5,7 @@ import Footer from "./components/Footer/Footer";
 import Search from "./components/Main/Search";
 import Outcome from "./components/Main/Outcome";
 import SavedRecipes from "./components/Main/SavedRecipes";
+import RecipeForm from "./components/Main/RecipeForm";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
           savedRecipes={savedRecipes}
         />
         <SavedRecipes savedRecipes={savedRecipes} />
+        <RecipeForm />
       </Main>
       <Footer />
     </div>
