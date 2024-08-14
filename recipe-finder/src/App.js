@@ -13,7 +13,14 @@ function App() {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [savedRecipes, setSavedRecipes] = useState([]);
+  const [savedRecipes, setSavedRecipes] = useState(function () {
+    const savedData = localStorage.getItem("saved");
+    if (savedData === null) {
+      return [];
+    } else {
+      return JSON.parse(savedData);
+    }
+  });
 
   function handleSavedRecipes(recipe) {
     const savedRecipe = {
@@ -41,6 +48,13 @@ function App() {
 
     setSavedRecipes((savedRecipes) => [...savedRecipes, savedRecipe]);
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("saved", JSON.stringify(savedRecipes));
+    },
+    [savedRecipes]
+  );
 
   useEffect(
     function () {
@@ -88,7 +102,10 @@ function App() {
           onSavedRecipes={handleSavedRecipes}
           savedRecipes={savedRecipes}
         />
-        <SavedRecipes savedRecipes={savedRecipes} />
+        <SavedRecipes
+          savedRecipes={savedRecipes}
+          onSetRecipes={setSavedRecipes}
+        />
         <RecipeForm />
       </Main>
       <Footer />

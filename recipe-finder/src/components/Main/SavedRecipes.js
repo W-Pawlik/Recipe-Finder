@@ -4,17 +4,15 @@ import React, { useRef, useState } from "react";
 import Slider from "react-slick";
 import NoSavedImg from "../../imgs/no-saved-rec.png";
 import Modal from "../ui/Modal/Modal";
+import Button from "../ui/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function SavedRecipes({ savedRecipes }) {
+export default function SavedRecipes({ savedRecipes, onSetRecipes }) {
   const [modalRec, setModalRec] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const sliderRef = useRef(null);
 
-  function handleRecModal(recipe) {
-    setIsOpen(!isOpen);
-    setModalRec(recipe);
-  }
-
-  const slider = useRef(null);
   const settings = {
     dots: true,
     infinite: true,
@@ -27,77 +25,73 @@ export default function SavedRecipes({ savedRecipes }) {
     cssEase: "linear",
   };
 
+  const toggleModal = (recipe) => {
+    setIsOpen((prevIsOpen) => !prevIsOpen);
+    setModalRec(recipe);
+  };
+
+  function handleRemoveRecipe(recipe) {
+    const newSavedRecipes = savedRecipes.filter(
+      (rec) => Number(rec.id) !== Number(recipe.id)
+    );
+    onSetRecipes(newSavedRecipes);
+  }
+
+  const renderSavedRecipes = () =>
+    savedRecipes.map((recipe) => (
+      <div className="slider-card" key={recipe.id}>
+        <img
+          className="slider-img"
+          src={recipe.img}
+          alt={recipe.name}
+          style={{ borderRadius: displaySlider ? "0px" : "10px" }}
+          onClick={() => toggleModal(recipe)}
+        />
+
+        <Button
+          className="delete-btn"
+          onClick={() => handleRemoveRecipe(recipe)}
+        >
+          <FontAwesomeIcon icon={faTrash} />
+        </Button>
+      </div>
+    ));
+
   const savedRecCount = savedRecipes.length;
   const displaySlider = savedRecCount > 5;
 
   return (
     <div className="savedRecipes">
       <h2>Saved Recipes</h2>
-
       {savedRecCount === 0 ? (
         <img
           src={NoSavedImg}
-          alt=" "
+          alt="No Saved Recipes"
           style={{ width: "25rem", borderRadius: "30px" }}
         />
       ) : displaySlider ? (
         <div className="slider">
           <button
             className="slider-btn"
-            onClick={() => slider?.current.slickPrev()}
+            onClick={() => sliderRef.current?.slickPrev()}
           >
             ◀
           </button>
-
-          <Slider ref={slider} {...settings}>
-            {savedRecipes.map((recipe) => {
-              return (
-                <div className="slider-card" key={recipe.id}>
-                  <img
-                    key={recipe.id}
-                    className="slider-img"
-                    src={recipe.img}
-                    alt={recipe.name}
-                    onClick={() => handleRecModal(recipe)}
-                  />
-                </div>
-              );
-            })}
+          <Slider ref={sliderRef} {...settings}>
+            {renderSavedRecipes()}
           </Slider>
-
           <button
             className="slider-btn right"
-            onClick={() => slider?.current.slickNext()}
+            onClick={() => sliderRef.current?.slickNext()}
           >
             ▶
           </button>
         </div>
       ) : (
-        <div className="slider">
-          {savedRecipes.map((recipe) => {
-            return (
-              <>
-                <div className="slider-card" key={recipe.id}>
-                  <img
-                    key={recipe.id}
-                    className="slider-img"
-                    style={{ borderRadius: "10px" }}
-                    src={recipe.img}
-                    alt={recipe.name}
-                    onClick={() => handleRecModal(recipe)}
-                  />
-                  {isOpen && (
-                    <Modal
-                      setIsOpen={setIsOpen}
-                      isOpen={isOpen}
-                      recipe={modalRec}
-                    />
-                  )}
-                </div>
-              </>
-            );
-          })}
-        </div>
+        <div className="slider">{renderSavedRecipes()}</div>
+      )}
+      {isOpen && (
+        <Modal setIsOpen={setIsOpen} isOpen={isOpen} recipe={modalRec} />
       )}
     </div>
   );

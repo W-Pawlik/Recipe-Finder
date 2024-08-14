@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Button from "../ui/Button";
 
 export default function RecipeForm() {
@@ -6,24 +6,43 @@ export default function RecipeForm() {
   const [category, setCategory] = useState("");
   const [country, setCountry] = useState("");
   const [instructions, setInstrucions] = useState("");
-  const [ingCount, setIngCount] = useState([1]);
+  const [ingredients, setIngredients] = useState([""]);
 
-  function handleRenderAntoherIng(e) {
-    e.preventDefault(e);
-    setIngCount((newIng) => [...ingCount, newIng]);
-    console.log(ingCount.length);
-  }
-
-  function handleRemoveIng(e) {
+  const handleAddIngredient = (e) => {
     e.preventDefault();
-    setIngCount([...ingCount.slice(0, -1)]);
+    setIngredients([...ingredients, ""]);
+  };
+
+  const handleRemoveIngredient = (e, index) => {
+    e.preventDefault();
+    const newIngredients = ingredients.filter((_, i) => i !== index);
+    setIngredients(newIngredients);
+    console.log(`Removed ing: ${index}`);
+    console.log(`Nowa lista: ${newIngredients}`);
+  };
+
+  function handleChangeIngredient(index, e) {
+    const newIngredients = ingredients.map((ingredient, i) => {
+      if (i === index) {
+        return e.target.value;
+      }
+      return ingredient;
+    });
+    setIngredients(newIngredients);
   }
 
   function handleSubmitForm(e) {
     e.preventDefault();
     console.log(
-      `created recipe ${recipeName}, category: ${category}, country: ${country}, instructions: ${instructions}`
+      `created recipe ${recipeName}, category: ${category}, country: ${country}, instructions: ${instructions}, ingriedients: ${ingredients}`
     );
+    console.log(ingredients);
+
+    setIngredients([""]);
+    setRecipeName("");
+    setCategory("");
+    setCountry("");
+    setInstrucions("");
   }
 
   return (
@@ -58,22 +77,27 @@ export default function RecipeForm() {
           ></input>
         </div>
 
-        {ingCount.map((ing, i) => {
+        {ingredients.map((ing, i) => {
           return (
-            <>
+            <React.Fragment key={i}>
               <div>
-                <label>ingredient</label>
-                <input type="text" name="ingredient"></input>
+                <label>ingredient {i + 1} and measure</label>
+                <input
+                  type="text"
+                  name="ingredient"
+                  onChange={(e) => handleChangeIngredient(i, e)}
+                  value={ing}
+                ></input>
               </div>
-              <div>
-                <label>Measure</label>
-                <input type="number" name="measure"></input>
-              </div>
-            </>
+              <Button onClick={(e) => handleRemoveIngredient(e, i)}>
+                ➖ Ing ➖
+              </Button>
+            </React.Fragment>
           );
         })}
-        <Button onClick={(e) => handleRemoveIng(e)}>➖ Ing ➖</Button>
-        <Button onClick={(e) => handleRenderAntoherIng(e)}>➕ Ing ➕</Button>
+        <Button className="two-col-div" onClick={(e) => handleAddIngredient(e)}>
+          ➕ Ing ➕
+        </Button>
         <div className="two-col-div">
           <label>Instructions</label>
           <textarea
