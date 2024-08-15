@@ -276,3 +276,24 @@ form button:hover {
 .cos {
   flex-direction: row;
 }
+
+.alphabet-container {
+  display: flex;
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.letter {
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.countrySeach {
+  margin-top: 2rem;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.countrySeach p {
+  margin-bottom: 1rem;
+}

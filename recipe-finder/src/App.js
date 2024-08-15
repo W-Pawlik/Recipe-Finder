@@ -6,6 +6,8 @@ import Search from "./components/Main/Search";
 import Outcome from "./components/Main/Outcome";
 import SavedRecipes from "./components/Main/SavedRecipes";
 import RecipeForm from "./components/Main/RecipeForm";
+import AlphabetBar from "./components/Main/AlphabetBar";
+import CountrySearch from "./components/Main/CountrySearch";
 import { useEffect, useState } from "react";
 
 function App() {
@@ -95,6 +97,17 @@ function App() {
       <Header />
       <Main>
         <Search query={query} setQuery={setQuery} />
+        <AlphabetBar
+          recipes={recipes}
+          setRecipes={setRecipes}
+          setError={setError}
+          setIsLoading={setIsLoading}
+        />
+        <CountrySearch
+          setRecipes={setRecipes}
+          setError={setError}
+          setIsLoading={setIsLoading}
+        />
         <Outcome
           recipes={recipes}
           isLoading={isLoading}

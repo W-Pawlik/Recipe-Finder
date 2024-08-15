@@ -1,4 +1,30 @@
-export default function Search({ query, setQuery, ref }) {
+import { useEffect, useRef } from "react";
+
+export default function Search({ query, setQuery }) {
+  const inputEl = useRef(null);
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (document.activeElement === inputEl.current && e.code === "Escape") {
+          inputEl.current.blur();
+          return;
+        }
+
+        if (e.code === "Enter") {
+          inputEl.current.focus();
+          setQuery("");
+        }
+      }
+      document.addEventListener("keydown", callback);
+
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [setQuery]
+  );
+
   return (
     <input
       className="search"
@@ -6,7 +32,7 @@ export default function Search({ query, setQuery, ref }) {
       placeholder="Search recipe..."
       value={query}
       onChange={(e) => setQuery(e.target.value)}
-      ref={ref}
+      ref={inputEl}
     ></input>
   );
 }

@@ -1,6 +1,6 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
 import NoSavedImg from "../../imgs/no-saved-rec.png";
 import Modal from "../ui/Modal/Modal";
@@ -29,6 +29,16 @@ export default function SavedRecipes({ savedRecipes, onSetRecipes }) {
     setIsOpen((prevIsOpen) => !prevIsOpen);
     setModalRec(recipe);
   };
+
+  useEffect(
+    function () {
+      if (!modalRec) return;
+      if (isOpen) document.title = `Recipe | ${modalRec.name}`;
+      console.log(modalRec.name);
+      if (!isOpen) document.title = `Recipe Finder 🍔🔎`;
+    },
+    [modalRec, isOpen]
+  );
 
   function handleRemoveRecipe(recipe) {
     const newSavedRecipes = savedRecipes.filter(

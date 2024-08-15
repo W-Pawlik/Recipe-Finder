@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "../Modal/modal.css";
 
 export default function Modal({ setIsOpen, isOpen, recipe }) {
