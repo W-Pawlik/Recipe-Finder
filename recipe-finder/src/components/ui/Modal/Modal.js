@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "../Modal/modal.css";
 
 export default function Modal({ setIsOpen, isOpen, recipe }) {
@@ -10,11 +9,7 @@ export default function Modal({ setIsOpen, isOpen, recipe }) {
           ✖
         </button>
         <h2>{recipe.name}</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident
-          perferendis suscipit officia recusandae, eveniet quaerat assumenda id
-          fugit, dignissimos maxime non natus placeat illo iust
-        </p>
+        <p>{recipe.instruction}</p>
       </div>
     </div>
   );

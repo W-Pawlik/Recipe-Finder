@@ -5,24 +5,45 @@ import Footer from "./components/Footer/Footer";
 import Search from "./components/Main/Search";
 import Outcome from "./components/Main/Outcome";
 import SavedRecipes from "./components/Main/SavedRecipes";
-import RecipeForm from "./components/Main/RecipeForm";
+import RecipeForm from "./components/form/RecipeForm";
 import AlphabetBar from "./components/Main/AlphabetBar";
 import CountrySearch from "./components/Main/CountrySearch";
 import { useEffect, useState } from "react";
+import { useFetchRecipeData } from "./hooks/useFetchRecipeData";
+import { useLocalStorageState } from "./hooks/useLocalStorageState";
 
 function App() {
+  const [queryLetter, setQuerryLetter] = useState("");
   const [query, setQuery] = useState("");
-  const [recipes, setRecipes] = useState([]);
+  const [allRec, setAllRec] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [savedRecipes, setSavedRecipes] = useState(function () {
-    const savedData = localStorage.getItem("saved");
-    if (savedData === null) {
-      return [];
-    } else {
-      return JSON.parse(savedData);
-    }
-  });
+  const [isLoadingLetter, setIsLoadingLetter] = useState(false);
+  const [errorLetter, setErrorLetter] = useState("");
+  const [isLoadingCountry, setIsLoadingisLoadingCountry] = useState(false);
+  const [errorCountry, setErrorCountry] = useState("");
+
+  const { recipes } = useFetchRecipeData(
+    query,
+    "s",
+    "search",
+    setIsLoading,
+    setError
+  );
+  const { recipes: letterRecipes } = useFetchRecipeData(
+    queryLetter,
+    "f",
+    "search",
+    setIsLoadingLetter,
+    setErrorLetter
+  );
+
+  const [savedRecipes, setSavedRecipes] = useLocalStorageState([], "saved");
+  const [createdRecipes, setCreatedRecipes] = useLocalStorageState(
+    [],
+    "createdRec"
+  );
 
   function handleSavedRecipes(recipe) {
     const savedRecipe = {
@@ -40,7 +61,6 @@ function App() {
         const ingredient = ingName + " " + measure;
         return ingredient;
       }).filter((ing) => ing.length > 2),
-      // userRating: userRating,
     };
 
     if (savedRecipes.map((rec) => rec.id).includes(savedRecipe.id)) {
@@ -53,43 +73,30 @@ function App() {
 
   useEffect(
     function () {
-      localStorage.setItem("saved", JSON.stringify(savedRecipes));
-    },
-    [savedRecipes]
-  );
+      if (query.length >= 3) {
+        setQuerryLetter(null);
 
-  useEffect(
-    function () {
-      async function fetchRecipes() {
-        try {
-          setIsLoading(true);
-          setError("");
-          const res = await fetch(
-            `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`
-          );
+        const filteredCreatedRecipes = createdRecipes.filter((recipe) =>
+          recipe.strMeal.toLowerCase().includes(query.toLowerCase())
+        );
 
-          if (!res.ok) throw new Error("Problem with fetching recipes");
+        const combinedRecipes = [...filteredCreatedRecipes, ...recipes];
+        setAllRec(combinedRecipes);
+      } else if (queryLetter && !query) {
+        const filteredByFirstLetter = createdRecipes.filter(
+          (recipe) =>
+            recipe.strMeal[0].toLowerCase() === queryLetter.toLowerCase()
+        );
 
-          const recipesData = await res.json();
+        const combinedRecipes = [...filteredByFirstLetter, ...letterRecipes];
 
-          if (recipesData.meals === null) throw new Error("Recipe not found");
-          setRecipes(recipesData.meals);
-          setError("");
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (query.length < 3) {
-        setRecipes([]);
-        setError("");
+        setAllRec(combinedRecipes);
+      } else {
+        setAllRec([]);
         return;
       }
-      fetchRecipes();
     },
-
-    [query]
+    [query, recipes, createdRecipes, queryLetter, letterRecipes]
   );
 
   return (
@@ -97,21 +104,19 @@ function App() {
       <Header />
       <Main>
         <Search query={query} setQuery={setQuery} />
-        <AlphabetBar
-          recipes={recipes}
-          setRecipes={setRecipes}
-          setError={setError}
-          setIsLoading={setIsLoading}
-        />
+        <AlphabetBar setQuerryLetter={setQuerryLetter} setQuery={setQuery} />
         <CountrySearch
-          setRecipes={setRecipes}
+          recipies={allRec}
+          setRecipes={setAllRec}
+          setErrorCountry={setErrorCountry}
+          setIsLoading={setIsLoadingisLoadingCountry}
           setError={setError}
-          setIsLoading={setIsLoading}
+          setErrorLetter={setErrorLetter}
         />
         <Outcome
-          recipes={recipes}
-          isLoading={isLoading}
-          error={error}
+          recipes={allRec}
+          isLoading={isLoading || isLoadingLetter || isLoadingCountry}
+          error={error || errorLetter || errorCountry}
           onSavedRecipes={handleSavedRecipes}
           savedRecipes={savedRecipes}
         />
@@ -119,7 +124,7 @@ function App() {
           savedRecipes={savedRecipes}
           onSetRecipes={setSavedRecipes}
         />
-        <RecipeForm />
+        <RecipeForm setCreatedRecipes={setCreatedRecipes} />
       </Main>
       <Footer />
     </div>

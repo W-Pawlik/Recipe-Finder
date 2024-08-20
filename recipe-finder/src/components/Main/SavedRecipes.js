@@ -41,9 +41,8 @@ export default function SavedRecipes({ savedRecipes, onSetRecipes }) {
   );
 
   function handleRemoveRecipe(recipe) {
-    const newSavedRecipes = savedRecipes.filter(
-      (rec) => Number(rec.id) !== Number(recipe.id)
-    );
+    const newSavedRecipes = savedRecipes.filter((rec) => rec.id !== recipe.id);
+    console.log(recipe.id);
     onSetRecipes(newSavedRecipes);
   }
 

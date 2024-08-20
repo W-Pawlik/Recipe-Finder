@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactFlagsSelect from "react-flags-select";
+import { useFetchRecipeData } from "../../hooks/useFetchRecipeData";
 
 const areaOptions = [
   { code: "US", name: "American" },
@@ -30,40 +31,47 @@ const areaOptions = [
   { code: "VN", name: "Vietnamese" },
 ];
 
-export default function CountrySearch({ setRecipes, setError, setIsLoading }) {
+export default function CountrySearch({
+  setRecipes,
+  setErrorCountry,
+  setIsLoading,
+  setError,
+  setErrorLetter,
+}) {
   const [selected, setSelected] = useState("");
+  const { mealIds, setMealIds } = useFetchRecipeData(
+    selected,
+    "a",
+    "filter",
+    setIsLoading,
+    setErrorCountry
+  );
 
   function handleSelect(code) {
     const selected = areaOptions.find((area) => area.code === code);
     setSelected(selected.name);
+
+    setRecipes([]);
+    setMealIds([]);
   }
 
-  useEffect(
-    function () {
-      async function fetchRecByCountry() {
-        try {
-          setIsLoading(true);
+  useEffect(() => {
+    async function fetchMeals() {
+      setError("");
+      setErrorLetter("");
+      const mealData = await Promise.all(
+        mealIds.map(async (id) => {
           const res = await fetch(
-            `https://www.themealdb.com/api/json/v1/1/filter.php?a=${selected}`
+            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
           );
-          if (!res.ok) throw new Error("Problem with fetching recipes");
-
           const data = await res.json();
-          if (data.meals === null) throw new Error("Recipe not found");
-          setRecipes(data.meals);
-          setError("");
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-
-      if (selected === "") return;
-      fetchRecByCountry();
-    },
-    [selected, setRecipes, setError, setIsLoading]
-  );
+          return data.meals[0];
+        })
+      );
+      setRecipes((recipes) => [...recipes, ...mealData]);
+    }
+    fetchMeals();
+  }, [mealIds, setRecipes, setError, setErrorLetter]);
 
   return (
     <div className="countrySeach">
