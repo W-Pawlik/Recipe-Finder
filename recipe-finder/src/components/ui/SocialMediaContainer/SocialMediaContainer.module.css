@@ -1,0 +1,13 @@
+.socialMediaContainer {
+  margin-left: 1rem;
+}
+
+.list {
+  display: flex;
+  list-style: none;
+  gap: 1rem;
+}
+
+.iconStyle {
+  color: black;
+}

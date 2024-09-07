@@ -1,0 +1,17 @@
+.footer {
+  margin-top: 3rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+}
+
+.footerContent {
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  border-top: 1px solid rgb(255, 196, 0);
+}
