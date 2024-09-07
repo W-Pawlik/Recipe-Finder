@@ -36,6 +36,6 @@ The application allows users to search for recipes available in TheMealDB databa
 ---
 ## ScreenShots
 
-![ss2](https://github.com/user-attachments/assets/5af59032-d32c-4ad2-9936-371c2defee60)
 ![ss1](https://github.com/user-attachments/assets/d19ec3e5-2166-40ac-b448-f3e61652bb6c)
+![ss2](https://github.com/user-attachments/assets/5af59032-d32c-4ad2-9936-371c2defee60)
 
